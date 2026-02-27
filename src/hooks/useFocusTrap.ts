@@ -16,13 +16,11 @@ export function useFocusTrap(ref: React.RefObject<HTMLElement>, isActive: boolea
       if (e.key !== "Tab") return;
 
       if (e.shiftKey) {
-        // If shift + tab and on first element, move to last
         if (document.activeElement === firstFocusable) {
           e.preventDefault();
           lastFocusable.focus();
         }
       } else {
-        // If tab and on last element, move to first
         if (document.activeElement === lastFocusable) {
           e.preventDefault();
           firstFocusable.focus();
@@ -30,17 +28,14 @@ export function useFocusTrap(ref: React.RefObject<HTMLElement>, isActive: boolea
       }
     }
 
-    // Store last focused element to restore focus when menu closes
     const lastFocusedElement = document.activeElement as HTMLElement;
 
-    // Focus first element when opened
     firstFocusable?.focus();
 
     element.addEventListener("keydown", handleTabKey);
 
     return () => {
       element.removeEventListener("keydown", handleTabKey);
-      // Restore focus when menu closes
       lastFocusedElement?.focus();
     };
   }, [isActive, ref]);
